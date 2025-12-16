@@ -27,7 +27,7 @@
     "yargs": "^17.7.2"
   },
   "engines": {
-    "node": ">=18.17.0"
+    "node": ">=18.17.0 <=22"
   },
   "optionalDependencies": {
     "better-sqlite3": "^11.7.0"
