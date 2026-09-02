@@ -16,16 +16,22 @@ export async function getUserDataForFid<
 }): Promise<UserDataReturnType> {
   const {
     hubHttpUrl = DEFAULT_HUB_API_URL,
-    hubRequestOptions = {
-      headers: {
-        api_key: DEFAULT_HUB_API_KEY,
-      },
-    },
+    hubRequestOptions = {},
   } = options;
+
+  const requestHeaders = {
+    ...(hubRequestOptions.headers ?? {}),
+    api_key: DEFAULT_HUB_API_KEY,
+  };
+
+  const requestOptions = {
+    ...hubRequestOptions,
+    headers: requestHeaders,
+  };
 
   const userDataResponse = await fetch(
     `${hubHttpUrl}/v1/userDataByFid?fid=${fid}`,
-    hubRequestOptions
+    requestOptions
   );
 
   const { messages } = (await userDataResponse
@@ -60,8 +66,6 @@ export async function getUserDataForFid<
         const foundValue = acc[type];
 
         if (foundValue && foundValue.timestamp < timestamp) {
-          acc[type] = { value, timestamp };
-        } else {
           acc[type] = { value, timestamp };
         }
       } catch (error) {
