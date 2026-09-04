@@ -65,7 +65,7 @@ export async function getUserDataForFid<
         const { type, value } = message.data.userDataBody;
         const foundValue = acc[type];
 
-        if (foundValue && foundValue.timestamp < timestamp) {
+        if (!foundValue || foundValue.timestamp < timestamp) {
           acc[type] = { value, timestamp };
         }
       } catch (error) {
