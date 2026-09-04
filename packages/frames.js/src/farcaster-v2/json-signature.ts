@@ -240,6 +240,12 @@ export async function verify(
     return false;
   }
 
+  // Auth addresses are delegated signers, so they are not the custody
+  // address returned by the IdRegistry custodyOf lookup.
+  if (decodedHeader.type === "auth") {
+    return true;
+  }
+
   const custodyAddressOfFid = await publicClient.readContract({
     abi: parseAbi([
       "function custodyOf(uint256) public view returns (address)",
@@ -384,7 +390,7 @@ export function decodeCustodyTypeSignature(signature: string): `0x${string}` {
     const asText = decoded.toString("utf-8").trim();
 
     // Check if it's a valid hex string (ASCII encoding)
-    if (/^0x[0-9a-fA-F]+$/.test(asText) && asText.length % 2 === 0) {
+    if (/^0x[0-9a-fA-F]+$/.test(asText)) {
       return asText as `0x${string}`;
     }
 
