@@ -20,8 +20,8 @@ export async function getUserDataForFid<
   } = options;
 
   const requestHeaders = {
-    ...(hubRequestOptions.headers ?? {}),
     api_key: DEFAULT_HUB_API_KEY,
+    ...(hubRequestOptions.headers ?? {}),
   };
 
   const requestOptions = {
